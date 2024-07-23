@@ -42,13 +42,13 @@
      File uploadDirectory = cleanupAndCreateDirectoryForUser();
  
      try {
-@@ -42,0 +42,5 @@
-+        String normalizedPath = uploadedFile.getCanonicalPath();
-+        if (!normalizedPath.startsWith(uploadDirectory.getCanonicalPath())) {
-+          return failed(this).feedback("path-traversal-attack-detected").build();
-+        }
-+
        var uploadedFile = new File(uploadDirectory, fullName);
+@@ -43,0 +43,5 @@
++        String canonicalUploadDir = new File(uploadDirectory).getCanonicalPath();
++        String canonicalUploadedFile = uploadedFile.getCanonicalPath();
++        if (!canonicalUploadedFile.startsWith(canonicalUploadDir)) {
++          return failed(this).feedback("path-traversal-profile-invalid-path").build();
++        }
        uploadedFile.createNewFile();
        FileCopyUtils.copy(file.getBytes(), uploadedFile);
  
